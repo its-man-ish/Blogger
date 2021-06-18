@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Create a new post
+{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<div class="container">
+    <div class="card p-3">
+        <h1 class="text-center card-title">Create a new Post</h1>
+
+        <form action="" method="post" class="p-3" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.media}}
+            {{form|crispy}}
+            <input type="submit" value="Post" class="btn btn-primary">
+            <a href="{% url 'home'  %}" class="btn btn-dark">back</a>
+
+        </form>
+
+    </div>
+</div>
+<script>
+
+    var name = "{{ user.id }}";
+    document.getElementById('username').value=name;
+
+</script>
+{% endblock %}

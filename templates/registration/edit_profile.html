@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+Edt profile page
+{% endblock %}
+
+{% block content %}
+<br>
+<br>
+
+    
+
+<div class="container">
+    {% if user.is_authenticated %}
+    <div class="card p-3">
+        {% if user.id == userprofile.user.id %}
+       
+           <div class="header text-center">
+           {% if userprofile.profile_pic %}
+           <p><img src="{{userprofile.profile_pic.url}}" alt="" width="200px" class='rounded-circle'></p>
+            {% else %}
+            <p><img src="{% static 'images/alien.png' %}" alt="" width="200px" class='rounded-circle'></p>
+  
+           {% endif %}
+            <h1 class=" card-title">Edit Your Profile</h1>
+           </div>
+
+            <form action="" method="post" class="p-3" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form|crispy}}
+                <input type="submit" value="Update" class="btn btn-primary">
+                <a href="{% url 'home'  %}" class="btn btn-dark">back</a>
+
+            </form>
+       {% else %}
+        
+       <p>Stop it get some help.</p>
+       <p><img src="{% static 'images/stop.jpg' %}" alt="" width="200px" class='rounded-circle'></p>
+
+     
+
+       {% endif %}
+     </div>
+    {% else %}
+        <h2>Hey bro, Log in first</h2>
+    {% endif %}
+</div>
+<script>
+
+    var name = "{{ user.id }}";
+    document.getElementById('username').value=name;
+
+</script>
+{% endblock %}

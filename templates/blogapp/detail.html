@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+
+<style>
+  .title{
+  color: rgb(5, 20, 39);
+  font-family: 'Roboto Slab', serif;
+}
+
+.post{
+
+width:45%
+
+}
+@media screen and (max-width: 1000px) {
+  .post{
+     
+     width:100%
+   }
+}
+</style>
+
+
+{% endblock %}
+{% block content %}
+<br>
+ <div class="post container">
+  <div class="card p-3">
+    <h1 class="title p-2">
+      {{post.title}}
+    </h1>
+
+<div class="container" >
+
+  
+      <div class="profile" >
+        <div class="container d-flex justify-content-between">
+           
+          <div class="row box1" style="width:300px; height:60px">
+            <div class="col-3">
+
+               {% if  post.author.userprofile.profile_pic %}
+                    <img src="{{ post.author.userprofile.profile_pic.url }}"  class="img-fluid img-centered rounded-circle" alt="">
+
+              {% else %}
+                    <img src="{% static 'images/alien.png' %}"  class="img-fluid img-centered rounded-circle" alt="">
+               {% endif %}
+
+            </div>
+            <div class="col pt-0">
+                 <p><b>{{post.author.first_name}} {{post.author.last_name}}</b> <br>
+                <span class="text-muted"> {{post.post_date}},</span></p>   
+            </div>
+          </div>   
+
+          <div class="box2">
+
+            <div class="dropdown">
+              <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+               More
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                {% if user.id == post.author.id%}
+                <li><a class="dropdown-item" href="{% url 'update' post.pk %}"><i class="bi bi-pencil-square"> </i>Edit</a></li>
+                <li><a class="dropdown-item" href="{% url 'delete' post.pk %}"><i class="bi bi-trash"> </i>Delete</a></li>
+                {% endif %}
+
+                {% if post.author.userprofile %}
+                <li><a href="{% url 'show_profile' post.author.userprofile.id %}" class="dropdown-item text-muted"><i class="bi bi-person-plus"> </i> Follow</a></li>
+                {% else  %}
+                <li><a href="" class="dropdown-item text-muted">Annonymous User</a></li>
+                {% endif %}
+
+              </ul>
+            </div>
+
+        </div>
+              
+        </div>
+      
+    </div>
+</div>
+<div class="card mb-3">
+  {% if post.header_image %}
+  <img src="{{post.header_image.url}}" alt="..." height="40%">
+ 
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title">{{post.title}}</h5>
+    <p class="card-text"> {{post.body|safe }}.</p>
+    <p class="card-text"><small class="text-muted">{{post.add_time|time:"TIME_FORMAT"}}, on {{post.post_date}}</small></p>
+  </div>
+</div>
+   
+    <div class="card footer p-3 pb-0">
+         
+   
+      <div class="box d-flex justify-content-between">
+        <div class="box1">
+         <a href="{% url 'add_comments' post.pk %}" class="btn btn-primary">Add Comment</a>
+        </div>
+        <div class="box2">
+          <p>
+    
+            <a href="{% url 'home'  %}" class="btn btn-primary right"><i class="bi bi-arrow-left-circle-fill"> </i>back</a>
+        
+           </p>
+        </div>
+      </div>
+    
+      
+       
+        {% if not post.comments.all %}
+
+        <h4>No comments</h4>
+       
+
+
+        {% else  %}
+        {% for comment in post.comments.all %}
+            
+          <div class="card p-2 bg-dark text-light my-2">
+          <p> <b>{{ comment.name}}</b> <span class="text-muted">{{ comment.date_added }}</span> </p>
+         <div class="card p-2 text-dark">
+          <p>{{comment.body}}</p>
+         </div>
+        
+          </div>
+          {% endfor %}
+        {% endif %}
+        
+    
+      
+    
+    </div>
+  </div>
+  
+ </div>
+{% endblock %}
+
