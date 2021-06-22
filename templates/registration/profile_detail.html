@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+profile details
+{% endblock %}
+
+{% block style %}
+<style>
+
+        .profile-header {
+            transform: translate(5rem);
+        }
+        .cover{
+            background-image: url(https://images.unsplash.com/photo-1623960733937-55d9c90e4ab0?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80);
+            background-size: cover;
+            background-repeat:no-repeat;
+
+
+        }
+        body{ 
+            background: #654ea3;
+            background: linear-gradient(to right, #e96443,#904e95);
+        }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!--Model-->
+<!-- Button trigger modal -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-center" id="exampleModalLabel">You are going to follow {{object}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+         follow {{ object }} to see all their posts
+        </div>
+
+        <div class="modal-footer">
+           {% if not follow %}
+               
+          
+            <form action="{% url 'follow'  %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="profile_pk" value="{{object.pk}}">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-primary">Follow</button>
+            </form>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+   
+   
+    <div class="row py-3 px-4">
+        <div class="col-md-5 mx-auto">
+            <div class="bg-white shadow rounded overflow-hidden">
+                <div class="px-4 pt-0 pb-4 cover">
+                    <div class="media align-item-end profile-head">
+                        <div class="profile mr-3">
+                          <img src="  {{object.profile_pic.url }}" alt="" class='img-fluid  pt-4' width='35%'>  
+                            <div class="media-body mb-5 text-white">
+                                <h4 class="mt-0 mb-0 px-3">@{{object|title}}</h4>
+                            
+                                <p class='mr-2 mx-3 my-0 shadow'>{{object.bio|title}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="bg-light p-4 d-flex justify-content-end text-center">
+  
+
+                  <div class="col follow-button mx-0">
+                    {% if follow %}
+    
+                    <form action="{% url 'follow' %}"  method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="profile_pk" value="{{object.pk}}">
+                        <button type="submit" class='btn btn-dark ' ><i class="bi bi-person-dash-fill"> </i>Un follow</button>
+                    </form>
+          
+                    {% else %}
+                       
+                    <button id="follow-btn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-person-plus-fill"> </i>Follow</button>
+                       
+                   {% endif %}
+                   </div>
+                  
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <h4 class="font-weight-bold mb-0 d-block">345</h4>
+                            <small class="text-muted">Gallary</small>
+                        </li>
+                        <li class="list-inline-item">
+                            <h4 class="font-weight-bold mb-0 d-block">345</h4>
+                            <small class="text-muted">Followers<small>
+                        </li>
+                        <li class="list-inline-item">
+                            <h4 class="font-weight-bold mb-0 d-block">345</h4>
+                            <small class="text-muted">Following<small>
+                        </li>
+                    </ul>
+                </div>
+               
+                <div class="py-4 px-4">
+                    <div class="d-flex align-item-center">
+                        <h4 class="mb-0">Recent Posts</h4>
+                        <a href="#" class="btn btn-link text-muted">Show all</a>
+                    </div>
+                    <div class="row">
+                      {% for post in posts %}
+                          {{post.title}}
+                      {% endfor %}
+                        <div class="col-lg-6 mb-2 pr-lg-1">
+                            <img src="{{object.profile_pic.url }}" alt="" class='img-fluid rounded shadow-sm'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+ 
+{% endblock %}

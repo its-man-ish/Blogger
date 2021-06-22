@@ -21,12 +21,12 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = 'django-insecure-hz84n#c2v=khl@t2!$5oa1-(%i+fze_sle4bh8q^3zoo4dbh(9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["shortblogs.herokuapp.com","localhost"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -49,7 +49,6 @@ CRISPY_TEMPLATE_PACK='bootstrap4'
 CKEDITOR_UPLOAD_PATH = 'uploads'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -123,10 +122,11 @@ USE_L10N = True
 USE_TZ = True
 MEDIA_URL ='/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATIC_DIR = os.path.join(BASE_DIR,'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [ STATIC_DIR,]
@@ -135,12 +135,12 @@ STATICFILES_DIRS = [ STATIC_DIR,]
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL='index'
+LOGIN_REDIRECT_URL='home'
 LOGOUT_REDIRECT_URL='index'
 
 CKEDITOR_CONFIGS = {
     'default': {
-       
+      
         'height': '80vh',
         'width': '100%',
     },

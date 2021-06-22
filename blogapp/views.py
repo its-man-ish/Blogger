@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from.forms import *
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import *
+from itertools import chain
 # Create your views here.
 
 
@@ -62,4 +63,31 @@ class AddCommentView(LoginRequiredMixin,CreateView):
 
 
  
+def post_of_user(request):
+    #get logged in user
+    profile = UserProfile.objects.get(user=request.user)
+    # check who we are following
+    users = [user for user in profile.following.all() ]
+
+
+    posts = []
+    qs = None
+
+    #get the posts of folloing user
+    for u in users:
+        p = UserProfile.objects.get(user=u)
+        p_post = p.post_set.all()
+        posts.append(p_post)
+    #includieng own posts
+    my_posts = profile.profile_posts()
+    posts.append(my_posts)
+
+    if len(posts)>0:
+        qs=sorted(chain(*posts),reverse=True, key=lambda obj:obj.post_date)
+    context = {
+        'posts': qs,
+        'profile': profile,
+        }
+    return render(request,'blogapp/user_posts.html', context)
+
 

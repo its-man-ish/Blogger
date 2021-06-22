@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Bloggers
+{% endblock %}
+{% block style %}
+
+<style>
+  body{ 
+  background: #654ea3;
+  background: linear-gradient(to right, #e96443,#904e95);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container ">
+    
+  <!--Profiles-->
+      
+        {% for profile in profiles %}
+        <div class="container p-3 bg-light">
+          <div class="row">
+            <div class="col">
+              {% if profile.profile_pic %}
+                      <div class="card "style='max-width: 100px;'>
+                        <img src="{{profile.profile_pic.url}}" alt="" class="img-responsive ">
+
+                      </div>
+                      {% else  %}
+                      <div class="card "style='max-width: 100px;'>
+                         <img src="{% static 'images/alien.png' %}" alt="" class="img-responsive">
+                        </div>
+                      {% endif %}
+            </div>
+            <div class="col">
+              <h3 class="text-right">{{profile|title}} </h3>
+            </div>
+            <div class="col">
+              {% if profile %}
+              <h3><a href="{% url 'profile_detail' profile.pk %}" class="btn btn-primary">Profile</a></h3>
+
+            {% endif %}
+            </div>
+          </div>
+        </div>
+
+                
+        
+        {% endfor %}
+      
+
+  
+
+{% endblock %}

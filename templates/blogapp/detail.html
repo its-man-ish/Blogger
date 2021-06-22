@@ -68,7 +68,7 @@ width:45%
                 {% endif %}
 
                 {% if post.author.userprofile %}
-                <li><a href="{% url 'show_profile' post.author.userprofile.id %}" class="dropdown-item text-muted"><i class="bi bi-person-plus"> </i> Follow</a></li>
+                <li><a href="{% url 'profile_detail' post.author.userprofile.id %}" class="dropdown-item text-muted"><i class="bi bi-person-plus"> </i> Follow</a></li>
                 {% else  %}
                 <li><a href="" class="dropdown-item text-muted">Annonymous User</a></li>
                 {% endif %}

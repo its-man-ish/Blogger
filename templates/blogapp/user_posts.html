@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  My Feed
+{% endblock %}
+{% block style %}
+<style>
+  body{ 
+  background: #654ea3;
+  background: linear-gradient(to right, #e96443,#904e95);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container p-3 ">
+   <div class="container">
+     <div class="row">
+       <div class="col-md-4 bg-primary text-light">
+         {% if profile.profile_pic %}
+         <div class="card  bg-primary">
+           
+            <img src="{{profile.profile_pic.url }}" class="img-responsive rounded-circle p-2 mx-5 text-center" alt="" width='60%'> 
+     
+          
+
+         </div>
+         {% endif %}
+       
+       {{profile|title}}
+        <br>
+        <a href="{% url 'profiles'  %}" class="btn btn-warning"> <i class='bi bi-people-fill'></i> People to Follow</a>
+        <br>
+        <br>
+        Following
+        <ul>
+          {% for f in profile.following.all %}
+              <li>{{f}}</li>
+          {% endfor %}
+        </ul>
+       </div>
+       <div class="col-md-8">
+            Posts:
+            <hr>
+            {% for post in posts %}
+                <div class="card p-2 my-2">
+                  <div class="card-header">{{post.author}}</div>
+                  <div class="card-body">
+                    {{post.body|safe}}
+                  </div>
+                  <div class="card">
+                                  
+                  {% if post.header_image %}
+                  <img src="{{post.header_image.url}}" alt="..." height="40%">
+                
+                  {% endif %}
+                  </div>
+                  
+                </div>
+            {% endfor %}
+       </div>
+     </div>
+   </div>
+</div>
+
+{% endblock %}

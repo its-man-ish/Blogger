@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 
 from django.views import generic
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
@@ -32,6 +32,7 @@ class UserProfileView(generic.DetailView):
     model = UserProfile
     template_name = 'registration/profile.html'
 
+   
     def get_context_data(self,*args, **kwargs):
         user = UserProfile.objects.all()
         page_user = get_object_or_404(UserProfile,id=self.kwargs['pk'])
@@ -56,3 +57,51 @@ class CreateProfilePageView(generic.CreateView):
         form.instance.user = self.request.user 
         return super().form_valid(form)
 
+class ProfileListView(generic.ListView):
+    model = UserProfile
+    template_name = 'registration/profile_list.html'
+    context_object_name = 'profiles'
+
+    def get_queryset(self):
+        return UserProfile.objects.all().exclude(user=self.request.user)
+        
+
+
+
+class ProfileDetail(generic.DetailView):
+    model = UserProfile
+    template_name = 'registration/profile_detail.html'
+
+    def get_object(self,**kwargs):
+        pk = self.kwargs.get('pk')
+        view_profile = UserProfile.objects.get(pk=pk)
+        return view_profile
+
+
+    def get_context_data(self,**kwargs):
+        context= super().get_context_data(**kwargs)
+        view_profile = self.get_object()
+        my_profile = UserProfile.objects.get(user=self.request.user)
+        if view_profile.user in my_profile.following.all():
+            follow = True
+        else:
+            follow = False
+        context['follow']=follow
+        return context
+        
+      
+
+def follow_unfollow_profile(request):
+    if request.method == 'POST':
+        my_profile = UserProfile.objects.get(user=request.user)
+        pk = request.POST.get('profile_pk')
+        obj = UserProfile.objects.get(pk=pk)
+
+        if obj.user in my_profile.following.all():
+            my_profile.following.remove(obj.user)
+        else:
+            my_profile.following.add(obj.user)
+        return redirect(request.META.get('HTTP_REFERER'))
+    
+    return redirect('home')
+          
