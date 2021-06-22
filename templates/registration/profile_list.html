@@ -35,7 +35,7 @@ Bloggers
                       {% endif %}
             </div>
             <div class="col">
-              <h3 class="text-right">{{profile|title}} </h3>
+              <h3 class="text-right">{{profile.user.first_name}} {{profile.user.last_name}} </h3>
             </div>
             <div class="col">
               {% if profile %}

@@ -41,8 +41,8 @@ width:45%
           <div class="row box1" style="width:300px; height:60px">
             <div class="col-3">
 
-               {% if  post.author.userprofile.profile_pic %}
-                    <img src="{{ post.author.userprofile.profile_pic.url }}"  class="img-fluid img-centered rounded-circle" alt="">
+               {% if  post.author.profile_pic %}
+                    <img src="{{ post.author.profile_pic.url }}"  class="img-fluid img-centered rounded-circle" alt="">
 
               {% else %}
                     <img src="{% static 'images/alien.png' %}"  class="img-fluid img-centered rounded-circle" alt="">
@@ -50,11 +50,11 @@ width:45%
 
             </div>
             <div class="col pt-0">
-                 <p><b>{{post.author.first_name}} {{post.author.last_name}}</b> <br>
+                 <p><b>{{post.author.user.first_name}} {{post.author.last_name}}</b> <br>
                 <span class="text-muted"> {{post.post_date}},</span></p>   
             </div>
           </div>   
-
+          {% if user.id == post.author.id%}
           <div class="box2">
 
             <div class="dropdown">
@@ -62,19 +62,15 @@ width:45%
                More
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                {% if user.id == post.author.id%}
+              
                 <li><a class="dropdown-item" href="{% url 'update' post.pk %}"><i class="bi bi-pencil-square"> </i>Edit</a></li>
                 <li><a class="dropdown-item" href="{% url 'delete' post.pk %}"><i class="bi bi-trash"> </i>Delete</a></li>
-                {% endif %}
+               
 
-                {% if post.author.userprofile %}
-                <li><a href="{% url 'profile_detail' post.author.userprofile.id %}" class="dropdown-item text-muted"><i class="bi bi-person-plus"> </i> Follow</a></li>
-                {% else  %}
-                <li><a href="" class="dropdown-item text-muted">Annonymous User</a></li>
-                {% endif %}
-
+      
               </ul>
             </div>
+            {% endif %}
 
         </div>
               

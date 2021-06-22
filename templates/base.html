@@ -51,11 +51,11 @@
                   <a href="{% url 'create'  %}" class="nav-link text-light" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="bi bi-plus-square-fill"> </i>Create</a>
                 </li>
 
-    
+                {% if user.userprofile.id %}
                 <li class="nav-item">
                   <a href="{% url 'user_posts'  %}" class="nav-link text-light"><i class="bi bi-images"> </i>My Feed</a>
                 </li>
-
+               {% endif %}   
                 <li class="nav-item">
 
                 <div class="dropdown ">

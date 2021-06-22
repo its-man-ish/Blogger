@@ -17,6 +17,7 @@ class HomeView(LoginRequiredMixin,ListView):
     model = Post
     ordering=['-id']
     login_url = 'login'
+    context_object_name = 'post'
     template_name ='blogapp/home.html'
 
 
@@ -88,6 +89,6 @@ def post_of_user(request):
         'posts': qs,
         'profile': profile,
         }
-    return render(request,'blogapp/user_posts.html', context)
+    return render(request,'blogapp/feed.html', context)
 
 
